@@ -1,31 +1,33 @@
-import { useSelector } from "react-redux";
-import { selectFilteredContacts } from "../../redux/filters/selectors";
-import s from "./ContactList.module.css";
+import React, { useEffect } from "react";
 import Contact from "../Contact/Contact";
+import s from "./ContactList.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsLoading } from "../../redux/contacts/selectors";
+import { Circles } from "react-loader-spinner";
+import { fetchContactThunk } from "../../redux/contacts/operations";
+import { selectFilteredContacts } from "../../redux/contacts/slice";
 
 const ContactList = () => {
-  const filteredContacts = useSelector(selectFilteredContacts);
-  const isLoading = useSelector((state) => state.contacts.loading);
-  const error = useSelector((state) => state.contacts.error);
+  const dispatch = useDispatch();
+  
+  const filteredData = useSelector(selectFilteredContacts);
+
+  useEffect(() => {
+    dispatch(fetchContactThunk());
+  }, [dispatch]);
 
   return (
-    <>
-      {isLoading && <p className={s.loadingMessage}>Loading contacts...</p>}
-      {error && (
-        <p className={s.errorMessage}>Error loading contacts: {error}</p>
-      )}
-      <ul className={s.list}>
-        {filteredContacts && filteredContacts.length > 0 ? (
-          filteredContacts.map((contact) => (
-            <li key={contact.id} className={s.contact}>
-              <Contact contact={contact} />
-            </li>
-          ))
-        ) : (
-          <p className={s.message}>Contacts not found</p>
-        )}
+    <div className={s.wrapper}>
+      
+
+      <ul className={s.contactsWrapper}>
+        {filteredData.map((item) => (
+          <li className={s.li} key={item.id}>
+            <Contact item={item} />
+          </li>
+        ))}
       </ul>
-    </>
+    </div>
   );
 };
 

@@ -1,17 +1,26 @@
-.navbar {
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px; 
+  }
+  
+  .nav {
+    display: flex;
+    gap: 20px; 
   }
   
   .link {
-    font-style: bold;
-    font-size: 26px;
-    color: #fff;
-    padding: 0 10px;
-    transition: color 0.3s;
+    font-size: 18px;
+    color: #4caf50;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   .link:hover {
-    color: lightblue;
+    background-color: #4caf50;
+    color: white;
   }
+  

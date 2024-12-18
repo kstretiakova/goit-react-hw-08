@@ -1,68 +1,45 @@
 import axios from "axios";
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { goitApi, setToken } from "../../config/goitApi";
 
-const BASE_URL = "https://connections-api.goit.global";
 
-const fetchWithAuth = (token) => {
-  return axios.create({
-    baseURL: BASE_URL,
-    headers: { Authorization: `Bearer ${token}` },
-  });
-};
 
-export const fetchContacts = createAsyncThunk(
-  "contacts/fetchContacts",
-  async (_, { getState, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-
-    if (!token) {
-      return rejectWithValue("Token not found. Please log in again.");
-    }
-
+export const fetchContactThunk = createAsyncThunk(
+  "fetchContacts",
+  async (_, thunkAPI) => {
     try {
-      const { data } = await fetchWithAuth(token).get("/contacts");
+      const { data } = await goitApi.get("/contacts");
+      
       return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-export const addContact = createAsyncThunk(
-  "contacts/addContact",
-  async (contact, { getState, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-
-    if (!token) {
-      return rejectWithValue("Token not found. Please log in again.");
-    }
-
+export const deleteContactThunk = createAsyncThunk(
+  "deleteContact",
+  async (id, thunkAPI) => {
     try {
-      const { data } = await fetchWithAuth(token).post("/contacts", contact);
-      return data;
+      await goitApi.delete(`/contacts/${id}`);
+      
+      return id;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-export const deleteContact = createAsyncThunk(
-  "contacts/deleteContact",
-  async (contactId, { getState, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-
-    if (!token) {
-      return rejectWithValue("Token not found. Please log in again.");
-    }
-
+export const addContactThunk = createAsyncThunk(
+  "addContact",
+  async (body, thunkAPI) => {
     try {
-      await fetchWithAuth(token).delete(`/contacts/${contactId}`);
-      return contactId;
+      const { data } = await goitApi.post("/contacts", body);
+      
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

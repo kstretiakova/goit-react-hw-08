@@ -1,61 +1,62 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { register, login, logout, refreshUser } from "./operations";
+
+import {
+  getMeThunk,
+  loginThunk,
+  logoutThunk,
+  registerThunk,
+} from "./operations";
 
 const initialState = {
-  user: { name: null, email: null },
+  user: {
+    name: null,
+    email: null,
+  },
   token: null,
   isLoggedIn: false,
   isRefreshing: false,
-  error: null,
+  isError: false,
 };
 
 const slice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(registerThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
-        state.error = null;
+        state.isError = false;
       })
-      .addCase(register.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(loginThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
-        state.error = null;
+        state.isError = false;
       })
-      .addCase(login.rejected, (state, action) => {
-        state.error = action.payload;
+      .addCase(loginThunk.rejected, (state, action) => {
+        state.isError = true;
       })
-      .addCase(logout.fulfilled, (state) => {
-        state.user = { name: null, email: null };
-        state.token = null;
-        state.isLoggedIn = false;
-        state.error = null;
+      .addCase(logoutThunk.fulfilled, (state, action) => {
+        return initialState;
       })
-      .addCase(logout.rejected, (state, action) => {
-        state.error = action.payload;
+      .addCase(getMeThunk.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.user.name = action.payload.name;
+        state.user.email = action.payload.email;
+        state.isRefreshing = false;
+        state.isError = false;
       })
-      .addCase(refreshUser.pending, (state) => {
+      .addCase(getMeThunk.pending, (state) => {
         state.isRefreshing = true;
+        state.isError = false;
       })
-      .addCase(refreshUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.isLoggedIn = true;
+      .addCase(getMeThunk.rejected, (state) => {
         state.isRefreshing = false;
-        state.error = null;
-      })
-      .addCase(refreshUser.rejected, (state, action) => {
-        state.isRefreshing = false;
-        state.error = action.payload;
+        state.isError = false;
       });
   },
 });
 
-export default slice.reducer;
+export const authReducer = slice.reducer;

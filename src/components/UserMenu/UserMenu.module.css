@@ -1,35 +1,25 @@
-.navbarWrapper {
+.container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 15px; /* Increased gap for better spacing */
-  margin-right: 20px;
-  padding: 10px 20px; /* Added padding for a more balanced layout */
-  background-color: #f8f9fa; /* Light background for contrast */
-  border-radius: 10px; /* Rounded corners for a softer look */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  gap: 15px;
 }
 
-.hello {
-  font-weight: bold; /* Corrected property for bold text */
-  font-size: 28px; /* Slightly increased font size */
-  color: #a4e0b3; /* Neutral dark color for better readability */
-  margin-right: 10px; /* Added spacing to separate text from buttons */
+.greeting {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
 }
 
 .button {
-  background-color: #007bff; /* Primary blue for a modern feel */
-  color: #ffffff; /* White text for better contrast */
-  font-weight: bold; /* Corrected property for bold text */
+  padding: 8px 16px;
+  background-color: #d55050;
+  color: white;
   border: none;
-  margin-left: 20px;
-  padding: 10px 20px; /* Increased padding for a comfortable click area */
-  border-radius: 30px; /* Softer corners */
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effects */
+  transition: background-color 0.3s ease;
 }
 
 .button:hover {
-  background-color: #0056b3; /* Darker blue for hover state */
-  transform: scale(1.05); /* Slight zoom effect on hover */
+  background-color: #f40404;
 }

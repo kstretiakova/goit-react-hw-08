@@ -1,50 +1,26 @@
-import { FaUser } from "react-icons/fa";
-import { PiPhoneFill } from "react-icons/pi";
-import s from "./Contact.module.css";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
-import Modal from "../Modal/Modal";
-import { deleteContact } from "../../redux/contacts/operations";
+import { deleteContactThunk } from "../../redux/contacts/operations";
+import styles from './Contact.module.css';
 
-const Contact = ({ contact }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contactToDelete, setContactToDelete] = useState(null);
+const Contact = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleDelete = (id) => {
-    dispatch(deleteContact(id));
-    setIsModalOpen(false);
-  };
-
-  const openDeleteModal = () => {
-    setContactToDelete(contact);
-    setIsModalOpen(true);
-  };
-
   return (
-    <div className={s.container}>
-      <div className={s.wrapper}>
-        <div className={s.userBox}>
-          <FaUser className={s.icon} />
-          <span className={s.userName}>{contact.name}</span>
-        </div>
-        <div className={s.phoneBox}>
-          <PiPhoneFill className={s.icon} />
-          <span>{contact.number}</span>
-        </div>
+    <div className={styles.contactContainer}>
+      <div className={styles.contactInfo}>
+        <p className={styles.contactName}>{item.name}</p>
+        <p className={styles.contactNumber}>{item.number}</p>
       </div>
-      <button className={s.button} onClick={openDeleteModal}>
+      <button
+        type="button"
+        className={styles.deleteButton}
+        onClick={() => {
+          dispatch(deleteContactThunk(item.id));
+        }}
+      >
         Delete
       </button>
-
-      {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onConfirm={() => handleDelete(contactToDelete.id)}
-          message={`Are you sure you want to delete ${contactToDelete?.name}?`}
-        />
-      )}
     </div>
   );
 };

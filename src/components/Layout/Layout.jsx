@@ -1,12 +1,14 @@
+import React from "react";
 import AppBar from "../AppBar/AppBar";
-import s from "./Layout.module.css";
-import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
 
-const Layout = ({ children }) => (
-  <div className={s.container}>
-    <AppBar />
-    <Suspense fallback={null}>{children}</Suspense>
-  </div>
-);
+const Layout = () => {
+  return (
+    <div>
+      <AppBar />
+      <Outlet />
+    </div>
+  );
+};
 
 export default Layout;
