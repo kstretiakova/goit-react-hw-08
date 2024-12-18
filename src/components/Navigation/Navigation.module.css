@@ -1,0 +1,18 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* gap: 20px; */
+  }
+  
+  .link {
+    font-style: bold;
+    font-size: 26px;
+    color: #fff;
+    padding: 0 10px;
+    transition: color 0.3s;
+  }
+  
+  .link:hover {
+    color: lightblue;
+  }
